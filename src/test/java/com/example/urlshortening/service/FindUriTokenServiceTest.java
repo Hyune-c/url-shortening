@@ -1,5 +1,6 @@
 package com.example.urlshortening.service;
 
+import com.example.urlshortening.data.TestData;
 import com.example.urlshortening.entity.UriTokenEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -10,7 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @Slf4j
-@SpringBootTest
+@DisplayName("[service] uriToken 조회")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class FindUriTokenServiceTest {
 
   @Autowired
@@ -19,14 +21,12 @@ class FindUriTokenServiceTest {
   @Autowired
   private CreateUriTokenService createUriTokenService;
 
-  public static String[] uri() {
-    return new String[]{
-        "https://github.com/Hyune-c/url-shortening/issues/3",
-        "https://www.google.com/search?q=url+%EC%B6%95%EC%95%BD+%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98&newwindow=1&rlz=1C5CHFA_enKR940KR940&biw=2560&bih=1329&sxsrf=ALeKk030HHsjqSzJ2LvBzbpWBqfjfALSQQ%3A1621991969400&ei=IaKtYJT0F6uUr7wP166w-Ac&oq=url&gs_lcp=Cgdnd3Mtd2l6EAMYATIECCMQJzIECCMQJzIECCMQJzIECAAQQzIHCAAQsQMQQzIICAAQsQMQgwEyAggAMgIIADICCAAyCAgAELEDEIMBOgcIIxCwAxAnOgkIABCwAxAHEB46CQgAELADEAUQHjoICAAQsAMQywE6CQgAELADEAgQHjoHCCMQsAIQJzoECAAQDToICAAQCBANEB46CAgAEA0QBRAeOggIABAHEAoQHjoICAAQCBAHEB46BggAEAcQHjoFCAAQywE6CggAEAcQChAeEBM6CggAEAgQBxAeEBM6CAgAEAcQHhATOgQIABATOgUIABCxA1Cj_AdYkKgIYO-5CGgBcAB4AIABeYgBlgeSAQMwLjiYAQCgAQGqAQdnd3Mtd2l6yAEKwAEB&sclient=gws-wiz"};
+  public static String[] validUri() {
+    return TestData.VALID_URI;
   }
 
-  @DisplayName("[성공] find token")
-  @MethodSource("uri")
+  @DisplayName("[성공] uri 로 uriToken 조회")
+  @MethodSource("validUri")
   @ParameterizedTest
   public void success_find(String uri) {
     // given

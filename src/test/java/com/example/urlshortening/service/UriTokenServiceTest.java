@@ -1,9 +1,11 @@
 package com.example.urlshortening.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.example.urlshortening.data.TestData;
 import com.example.urlshortening.entity.UriTokenEntity;
 import com.example.urlshortening.repository.UriTokenRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,7 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @Slf4j
-@SpringBootTest
+@DisplayName("[service] uriToken 통합 서비스")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UriTokenServiceTest {
 
   @Autowired
@@ -20,40 +23,58 @@ class UriTokenServiceTest {
   @Autowired
   private UriTokenRepository uriTokenRepository;
 
-  public static String[] uri() {
-    return new String[]{
-        "https://github.com/Hyune-c/url-shortening/issues/3",
-        "https://www.google.com/search?q=url+%EC%B6%95%EC%95%BD+%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98&newwindow=1&rlz=1C5CHFA_enKR940KR940&biw=2560&bih=1329&sxsrf=ALeKk030HHsjqSzJ2LvBzbpWBqfjfALSQQ%3A1621991969400&ei=IaKtYJT0F6uUr7wP166w-Ac&oq=url&gs_lcp=Cgdnd3Mtd2l6EAMYATIECCMQJzIECCMQJzIECCMQJzIECAAQQzIHCAAQsQMQQzIICAAQsQMQgwEyAggAMgIIADICCAAyCAgAELEDEIMBOgcIIxCwAxAnOgkIABCwAxAHEB46CQgAELADEAUQHjoICAAQsAMQywE6CQgAELADEAgQHjoHCCMQsAIQJzoECAAQDToICAAQCBANEB46CAgAEA0QBRAeOggIABAHEAoQHjoICAAQCBAHEB46BggAEAcQHjoFCAAQywE6CggAEAcQChAeEBM6CggAEAgQBxAeEBM6CAgAEAcQHhATOgQIABATOgUIABCxA1Cj_AdYkKgIYO-5CGgBcAB4AIABeYgBlgeSAQMwLjiYAQCgAQGqAQdnd3Mtd2l6yAEKwAEB&sclient=gws-wiz"};
+  public static String[] validUri() {
+    return TestData.VALID_URI;
   }
 
-  @DisplayName("[성공] encode uri")
-  @MethodSource("uri")
+  @DisplayName("[성공] uri 로 encode ")
+  @MethodSource("validUri")
   @ParameterizedTest
-  public void success_create(String uri) {
+  public void success_encode(String uri) {
     // given
 
     // when
-    String token = uriTokenService.encode(uri);
+    String uriToken = uriTokenService.encode(uri);
 
     // then
-    Assertions.assertThat(token).isNotBlank();
-    log.info("### token: {} ", token);
+    assertThat(uriToken).isNotBlank();
+    log.info("### token: {} ", uriToken);
   }
 
-  @DisplayName("[성공] decode token")
-  @MethodSource("uri")
+  @DisplayName("[성공] uriToken 으로 decode")
+  @MethodSource("validUri")
   @ParameterizedTest
-  public void success_find(String uri) {
+  public void success_decode(String uri) {
     // given
-    String token = uriTokenService.encode(uri);
+    String uriToken = uriTokenService.encode(uri);
 
     // when
-    String originUri = uriTokenService.decode(token);
+    String decodeUri = uriTokenService.decode(uriToken);
 
     // then
-    UriTokenEntity uriToken = uriTokenRepository.findByUri(originUri).get();
-    Assertions.assertThat(uriToken.getUriToken()).isEqualTo(token);
-    Assertions.assertThat(uriToken.getUri()).isEqualTo(originUri);
-    Assertions.assertThat(uriToken.getCount()).isGreaterThan(0);
+    UriTokenEntity uriTokenEntity = uriTokenRepository.findByUri(decodeUri).get();
+    assertThat(uriTokenEntity.getUriToken()).isEqualTo(uriToken);
+    assertThat(uriTokenEntity.getUri()).isEqualTo(decodeUri);
+    assertThat(uriTokenEntity.getCount()).isGreaterThan(0);
+  }
+
+  @DisplayName("[성공] uriToken 으로 decode - count 증가")
+  @MethodSource("validUri")
+  @ParameterizedTest
+  public void success_decode_increaseCount(String uri) {
+    // given
+    String uriToken = uriTokenService.encode(uri);
+
+    for (int i = 1; i < 10; i++) {
+      // when
+      String decodeUri = uriTokenService.decode(uriToken);
+
+      // then
+      UriTokenEntity uriTokenEntity = uriTokenRepository.findByUri(decodeUri).get();
+      assertThat(uriTokenEntity.getUriToken()).isEqualTo(uriToken);
+      assertThat(uriTokenEntity.getUri()).isEqualTo(decodeUri);
+      assertThat(uriTokenEntity.getCreatedAt()).isBefore(uriTokenEntity.getUpdatedAt());
+      assertThat(uriTokenEntity.getCount()).isEqualTo(i);
+    }
   }
 }
