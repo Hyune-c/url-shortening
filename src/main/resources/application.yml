@@ -12,6 +12,15 @@ spring:
   h2:
     console:
       enabled: true
+  devtools:
+    livereload:
+      enabled: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+    check-template-location: true
+
 logging:
   level:
     org:

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Contetnt-Type" content="text/html" ; charset="UTF-8"/>
+  <title>Url Shortening</title>
+</head>
+<body>
+<h1 th:text="${message}"> Hello World</h1>
+<form method="post" action="/encode">
+  <input type="text" name="uri" width="400" th:value="${value}"/>
+  <input type="submit" value="Click"/>
+</form>
+<a th:href="${result}"><p th:text="${result}"> Hello World</p></a>
+</body>
+</html>
