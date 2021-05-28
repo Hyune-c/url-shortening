@@ -1,8 +1,10 @@
 package com.example.urlshortening.converter;
 
+import static com.example.urlshortening.common.exception.ErrorCode.MUST_GREATER_THAN_0;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.example.urlshortening.common.exception.custom.BusinessException;
 import com.example.urlshortening.data.TestData;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -48,8 +50,9 @@ class Base62ConverterTest {
     converter = new Base62Converter();
 
     // when
-    assertThrows(IllegalArgumentException.class, () -> converter.encode(uriTokenId));
+    BusinessException exception = assertThrows(BusinessException.class, () -> converter.encode(uriTokenId));
 
     // then
+    assertThat(exception.getErrorCode()).isEqualTo(MUST_GREATER_THAN_0);
   }
 }

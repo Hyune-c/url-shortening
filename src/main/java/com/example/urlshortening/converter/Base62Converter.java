@@ -1,5 +1,8 @@
 package com.example.urlshortening.converter;
 
+import static com.example.urlshortening.common.exception.ErrorCode.MUST_GREATER_THAN_0;
+
+import com.example.urlshortening.common.exception.custom.BusinessException;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,7 +15,7 @@ public class Base62Converter implements Converter {
 
   public String encode(Long param) {
     if (param < 0) {
-      throw new IllegalArgumentException();
+      throw new BusinessException(MUST_GREATER_THAN_0);
     }
 
     String result = "0";

@@ -1,10 +1,15 @@
 package com.example.urlshortening.service;
 
+import static com.example.urlshortening.common.exception.ErrorCode.NOT_FOUND;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import com.example.urlshortening.common.exception.custom.BusinessException;
 import com.example.urlshortening.data.TestData;
 import com.example.urlshortening.entity.UriTokenEntity;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +30,7 @@ class FindUriTokenServiceTest {
     return TestData.VALID_URI;
   }
 
-  @DisplayName("[성공] uri 로 uriToken 조회")
+  @DisplayName("[성공] uriTokenId 로 uriToken 조회")
   @MethodSource("validUri")
   @ParameterizedTest
   public void success_find(String uri) {
@@ -36,6 +41,19 @@ class FindUriTokenServiceTest {
     UriTokenEntity uriToken = findUriTokenService.findById(uriTokenId);
 
     // then
-    Assertions.assertThat(uriToken).isNotNull();
+    assertThat(uriToken).isNotNull();
+  }
+
+  @DisplayName("[실패] uri 로 uriToken 조회")
+  @Test
+  public void fail_find() {
+    // given
+    String uri = "a";
+
+    // when
+    BusinessException exception = assertThrows(BusinessException.class, () -> findUriTokenService.findByUri(uri));
+
+    // then
+    assertThat(exception.getErrorCode()).isEqualTo(NOT_FOUND);
   }
 }
