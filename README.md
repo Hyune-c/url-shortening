@@ -4,6 +4,7 @@
 
 - springboot 2.5.0
 - h2
+- ehcache
 - thymeleaf
 
 ## 2. API 설명

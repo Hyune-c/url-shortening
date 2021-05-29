@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,7 @@ public class UriShorteningController {
     return new EncodeUriResponse(uriToken);
   }
 
+  @Cacheable(value = "findAllUriTokenCache")
   @GetMapping("/api/v1/uriTokens")
   public FindAllUriTokenResponse findAllUriTokens() {
     List<UriTokenEntity> uriTokens = findUriTokenService.findAll();

@@ -1,13 +1,14 @@
 package com.example.urlshortening.controller.response;
 
 import com.example.urlshortening.entity.UriTokenEntity;
+import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UriTokenResponse {
+public class UriTokenResponse implements Serializable {
 
   private Long uriTokenId;
   private String uriToken;
