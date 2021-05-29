@@ -43,7 +43,7 @@ class UriTokenEntityRepositoryTest {
 
     // then
     assertThat(crateUriTokenEntity.getUri()).isNotBlank();
-    assertThat(crateUriTokenEntity.getCount()).isEqualTo(0);
+    assertThat(crateUriTokenEntity.getCallCount()).isEqualTo(0);
 
     log.info("### uri {}", crateUriTokenEntity.getUri());
     log.info("### createdAt {}, updatedAt {}", crateUriTokenEntity.getCreatedAt(), crateUriTokenEntity.getUpdatedAt());

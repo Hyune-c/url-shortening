@@ -26,12 +26,13 @@ public class UriTokenEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long uriTokenId;
 
-  private String uriToken;
+  @Column(length = 8)
+  private String uriToken; // encode 된 uriTokenId
 
   @Column(length = 2048)
-  private String uri;
+  private String uri; // 원본 uri
 
-  private Long count;
+  private Long callCount; // 호출된 횟수
 
   @CreatedDate
   private LocalDateTime createdAt;
@@ -42,11 +43,11 @@ public class UriTokenEntity {
   public UriTokenEntity(String newUri) {
     uri = newUri;
 
-    count = 0L;
+    callCount = 0L;
   }
 
   public void addCount() {
-    count++;
+    callCount++;
   }
 
   public Long getUriTokenId() {
@@ -61,8 +62,8 @@ public class UriTokenEntity {
     return uri;
   }
 
-  public Long getCount() {
-    return count;
+  public Long getCallCount() {
+    return callCount;
   }
 
   public LocalDateTime getCreatedAt() {

@@ -55,7 +55,7 @@ class UriTokenServiceTest {
     UriTokenEntity uriTokenEntity = uriTokenRepository.findByUri(decodeUri).get();
     assertThat(uriTokenEntity.getUriToken()).isEqualTo(uriToken);
     assertThat(uriTokenEntity.getUri()).isEqualTo(decodeUri);
-    assertThat(uriTokenEntity.getCount()).isGreaterThan(0);
+    assertThat(uriTokenEntity.getCallCount()).isGreaterThan(0);
   }
 
   @DisplayName("[성공] uriToken 으로 decode - count 증가")
@@ -74,7 +74,7 @@ class UriTokenServiceTest {
       assertThat(uriTokenEntity.getUriToken()).isEqualTo(uriToken);
       assertThat(uriTokenEntity.getUri()).isEqualTo(decodeUri);
       assertThat(uriTokenEntity.getCreatedAt()).isBefore(uriTokenEntity.getUpdatedAt());
-      assertThat(uriTokenEntity.getCount()).isEqualTo(i);
+      assertThat(uriTokenEntity.getCallCount()).isEqualTo(i);
     }
   }
 }

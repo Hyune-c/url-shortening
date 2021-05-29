@@ -19,6 +19,6 @@ public class UriTokenResponse implements Serializable {
     this.uriTokenId = uriToken.getUriTokenId();
     this.uriToken = uriToken.getUriToken();
     this.uri = uriToken.getUri();
-    this.count = uriToken.getCount();
+    this.count = uriToken.getCallCount();
   }
 }
