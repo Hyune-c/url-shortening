@@ -1,4 +1,4 @@
-package com.example.urlshortening.controller.request;
+package com.example.urlshortening.controller.response;
 
 import com.example.urlshortening.config.ApplicationProperty;
 import lombok.AccessLevel;

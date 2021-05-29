@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.example.urlshortening.controller.request.EncodeUriRequest;
-import com.example.urlshortening.controller.request.EncodeUriResponse;
+import com.example.urlshortening.controller.response.EncodeUriResponse;
 import com.example.urlshortening.data.BulkTestData;
 import com.example.urlshortening.data.TestData;
 import com.example.urlshortening.util.TestUtil;
