@@ -40,6 +40,4 @@ logging:
             sql: info
 
 application:
-  converter:
-    maxLength: 8
   baseUrl: ${BASE_URL:http://localhost:8080/}
