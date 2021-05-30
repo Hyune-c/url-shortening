@@ -23,7 +23,9 @@ public class CreateUriTokenService {
         .orElseGet(() -> {
           UriTokenEntity newUriEntity = new UriTokenEntity(uri);
           uriTokenRepository.save(newUriEntity);
-          newUriEntity.setUriToken(converter.encode(newUriEntity.getUriTokenId()));
+
+          String uriToken = converter.encode(newUriEntity.getUriTokenId());
+          newUriEntity.setUriToken(uriToken);
 
           return newUriEntity;
         });
