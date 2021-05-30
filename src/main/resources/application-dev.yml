@@ -1,0 +1,38 @@
+spring:
+  profiles:
+    active:
+      on-profile: dev
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: ${JDBC_URL:jdbc:h2:mem:testdb}
+    driverClassName: org.h2.Driver
+    username: ${JDBC_USERNAME:sa}
+    password: ${JDBC_PASSWORD:}
+  h2:
+    console:
+      enabled: true
+  devtools:
+    livereload:
+      enabled: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+    check-template-location: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+
+application:
+  baseUrl: ${BASE_URL:http://localhost:8080/}
