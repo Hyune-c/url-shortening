@@ -15,6 +15,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -38,5 +39,11 @@ public class UriShorteningController {
     return new FindAllUriTokenResponse(uriTokens.stream()
         .map(UriTokenResponse::new)
         .collect(Collectors.toList()));
+  }
+
+  @GetMapping("/api/v1/uriTokens/search")
+  public UriTokenResponse searchAllUriTokens(@RequestParam String uri) {
+    UriTokenEntity uriToken = findUriTokenService.findByUri(uri);
+    return new UriTokenResponse(uriToken);
   }
 }

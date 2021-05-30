@@ -1,5 +1,7 @@
 package com.example.urlshortening.service;
 
+import com.example.urlshortening.common.exception.ErrorCode;
+import com.example.urlshortening.common.exception.custom.BusinessException;
 import com.example.urlshortening.entity.UriTokenEntity;
 import com.example.urlshortening.repository.UriTokenRepository;
 import java.util.List;
@@ -18,5 +20,10 @@ public class FindUriTokenService {
 
   public List<UriTokenEntity> findAll() {
     return uriTokenRepository.findAll();
+  }
+
+  public UriTokenEntity findByUri(String uri) {
+    return uriTokenRepository.findByUri(uri)
+        .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
   }
 }
