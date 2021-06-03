@@ -56,12 +56,12 @@ class UriShorteningControllerTest {
     testUrl = "/api/v1/encode";
   }
 
-  public static String[] validUri() {
-    return TestData.VALID_URI;
+  public static String[] validBulkUri() {
+    return BulkTestData.VALID_URI;
   }
 
   @DisplayName("[성공] uri 를 encode - bulk")
-  @MethodSource("validUri")
+  @MethodSource("validBulkUri")
   @ParameterizedTest
   public void success_encode(String uri) throws Exception {
     // given
@@ -82,12 +82,12 @@ class UriShorteningControllerTest {
     log.info("### response.getRedirectUri: {} ", response.getRedirectUri());
   }
 
-  public static String[] validBulkUri() {
-    return BulkTestData.VALID_URI;
+  public static String[] validUri() {
+    return TestData.VALID_URI;
   }
 
   @DisplayName("[성공] uri 를 encode 후 redirect")
-  @MethodSource("validBulkUri")
+  @MethodSource("validUri")
   @ParameterizedTest
   public void success_redirectAfterEncode(String uri) throws Exception {
     // given
@@ -117,7 +117,7 @@ class UriShorteningControllerTest {
   @Test
   public void success_findAllUriToken_cache() throws Exception {
     // given
-    Arrays.stream(BulkTestData.VALID_URI)
+    Arrays.stream(TestData.VALID_URI)
         .forEach(uri -> createUriTokenService.create(uri));
     testUrl = "/api/v1/uriTokens";
 
