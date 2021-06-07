@@ -124,30 +124,29 @@ class UriShorteningControllerTest {
     // when
     // not using cache
     RequestBuilder requestBuilder = get(testUrl);
-    StopWatch notUsingCacheStopWatch = new StopWatch();
-    notUsingCacheStopWatch.start("not using cache");
+    StopWatch stopWatch = new StopWatch();
+    stopWatch.start("not using cache");
     mockMvc.perform(requestBuilder)
         .andExpect(status().is2xxSuccessful());
-    notUsingCacheStopWatch.stop();
+    stopWatch.stop();
 
-    Long notUsingCacheTime = notUsingCacheStopWatch.getLastTaskTimeNanos();
+    Long notUsingCacheTime = stopWatch.getLastTaskTimeNanos();
 
     // using cache
-    StopWatch usingCacheStopWatch = new StopWatch();
     requestBuilder = get(testUrl);
     for (int i = 0; i < 10; i++) {
-      usingCacheStopWatch.start("using cache " + i);
+      stopWatch.start("using cache " + i);
       mockMvc.perform(requestBuilder)
           .andExpect(status().is2xxSuccessful());
-      usingCacheStopWatch.stop();
+      stopWatch.stop();
     }
 
     // then
-    Arrays.stream(usingCacheStopWatch.getTaskInfo())
+    Arrays.stream(stopWatch.getTaskInfo())
+        .skip(1)
         .map(TaskInfo::getTimeNanos)
         .forEach(usingCacheTime -> assertThat(usingCacheTime).isLessThan(notUsingCacheTime));
 
-    log.info(notUsingCacheStopWatch.prettyPrint());
-    log.info(usingCacheStopWatch.prettyPrint());
+    log.info(stopWatch.prettyPrint());
   }
 }
